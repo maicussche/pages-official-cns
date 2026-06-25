@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
+    <title>PG模拟器 · 轻量导航站</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f9fc;
+            color: #1c2b36;
+            line-height: 1.6;
+            padding: 0 1rem;
+        }
+
+        /* 顶部导航 */
+        .top-bar {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 1.2rem 0 0.8rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #d0e2e9;
+        }
+
+        .logo-area {
+            font-weight: 600;
+            font-size: 1.2rem;
+            letter-spacing: 0.3px;
+            color: #1e6b7d;
+        }
+
+        .logo-area span {
+            background: #d9ecef;
+            padding: 0.1rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: #135560;
+            margin-left: 6px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.8rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #1c4b5a;
+            font-weight: 450;
+            font-size: 0.95rem;
+            padding: 0.2rem 0;
+            border-bottom: 2px solid transparent;
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .nav-links a:hover {
+            border-bottom-color: #2f9aaf;
+            color: #0d3e4a;
+        }
+
+        /* 主容器 */
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto 3rem;
+        }
+
+        /* 核心介绍区 */
+        .hero-card {
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 2.5rem 2.2rem;
+            box-shadow: 0 8px 20px rgba(30, 90, 105, 0.06);
+            border: 1px solid #daeef3;
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-card h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #144c5a;
+            letter-spacing: -0.3px;
+            margin-bottom: 0.8rem;
+        }
+
+        .hero-card .tagline {
+            background: #e3f2f5;
+            display: inline-block;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            color: #1a6373;
+            margin-bottom: 1.4rem;
+        }
+
+        .hero-card p {
+            color: #2c4753;
+            max-width: 680px;
+            margin-bottom: 1rem;
+        }
+
+        .hero-card .link-sentence {
+            background: #eef7f9;
+            padding: 0.7rem 1.2rem;
+            border-radius: 40px;
+            display: inline-block;
+            margin-top: 0.3rem;
+        }
+
+        .hero-card a {
+            color: #116b7e;
+            font-weight: 520;
+            text-decoration: none;
+            border-bottom: 1px dashed #58aebf;
+        }
+
+        .hero-card a:hover {
+            background: #cde5eb;
+            border-bottom-style: solid;
+        }
+
+        /* 三个场景模块 —— 网格卡片 */
+        .scene-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .scene-card {
+            background: white;
+            border-radius: 24px;
+            padding: 1.8rem 1.4rem;
+            box-shadow: 0 4px 14px rgba(26, 88, 104, 0.04);
+            border: 1px solid #d6e8ed;
+            transition: transform 0.15s, box-shadow 0.2s;
+        }
+
+        .scene-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(19, 80, 95, 0.08);
+        }
+
+        .scene-card .icon {
+            font-size: 1.7rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .scene-card h3 {
+            font-size: 1.15rem;
+            font-weight: 550;
+            color: #165b6b;
+            margin: 0.3rem 0 0.6rem;
+        }
+
+        .scene-card p {
+            font-size: 0.92rem;
+            color: #2a4b58;
+        }
+
+        .scene-card .badge {
+            background: #dcf0f5;
+            border-radius: 40px;
+            padding: 0.2rem 0.8rem;
+            font-size: 0.7rem;
+            color: #115a6b;
+            display: inline-block;
+            margin-top: 0.7rem;
+        }
+
+        /* 常见说明块 */
+        .faq-block {
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 2rem 2.2rem;
+            border: 1px solid #d2e6ec;
+            box-shadow: 0 4px 12px rgba(28, 80, 95, 0.03);
+        }
+
+        .faq-block h2 {
+            font-size: 1.35rem;
+            font-weight: 590;
+            color: #144c5a;
+            margin-bottom: 1.4rem;
+            border-left: 4px solid #3199ae;
+            padding-left: 1rem;
+        }
+
+        .faq-item {
+            margin-bottom: 1.1rem;
+        }
+
+        .faq-item .q {
+            font-weight: 540;
+            color: #1d4d5c;
+            margin-bottom: 0.15rem;
+            display: flex;
+            gap: 6px;
+        }
+
+        .faq-item .q::before {
+            content: "▹";
+            color: #2e9aae;
+        }
+
+        .faq-item .a {
+            color: #305764;
+            font-size: 0.92rem;
+            padding-left: 1.2rem;
+        }
+
+        .faq-item .a a {
+            color: #127386;
+            text-decoration: none;
+            border-bottom: 1px dotted #6fb7c9;
+        }
+
+        .faq-item .a a:hover {
+            background: #daeef3;
+        }
+
+        .foot-note {
+            margin-top: 2rem;
+            text-align: center;
+            color: #437280;
+            font-size: 0.85rem;
+            border-top: 1px solid #d3e4ea;
+            padding-top: 1.5rem;
+        }
+
+        .foot-note a {
+            color: #0c657a;
+            text-decoration: none;
+        }
+
+        /* 响应式 */
+        @media (max-width: 780px) {
+            .top-bar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.6rem;
+            }
+
+            .nav-links {
+                gap: 1.2rem;
+                font-size: 0.9rem;
+            }
+
+            .hero-card h1 {
+                font-size: 1.6rem;
+            }
+
+            .scene-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .scene-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-card {
+                padding: 1.8rem 1.2rem;
+            }
+
+            .faq-block {
+                padding: 1.5rem 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部导航 -->
+    <header class="top-bar">
+        <div class="logo-area">
+            📋 轻量导航 <span>pg 模拟</span>
+        </div>
+        <div class="nav-links">
+            <a href="#">日常</a>
+            <a href="#">对照</a>
+            <a href="#">延伸</a>
+            <a href="#">说明</a>
+        </div>
+    </header>
+
+    <!-- 主内容 -->
+    <div class="container">
+
+        <!-- 核心介绍区 hero -->
+        <div class="hero-card">
+            <h1>PG模拟器 · 日常查询与场景</h1>
+            <span class="tagline">从随手查阅到对照参考</span>
+            <p>
+                无论是想快速了解某款游戏的运行表现，还是对比不同配置下的画面差异，<strong>pg模拟器</strong> 
+                都能提供一个相对轻量的信息参考。这里没有复杂的术语堆砌，更多是日常使用时积累下来的观察。
+            </p>
+            <p>
+                对于经常需要查阅版本兼容性、外设适配情况的朋友来说，一个可以随时检索的对照页面会省去很多来回翻找的麻烦。
+                如果你刚开始接触这类工具，不妨从基础场景入手，慢慢熟悉其中的节奏。
+            </p>
+            <div class="link-sentence">
+                想直接体验？欢迎了解 <a href="https://webs-pocketgamessoft.com">pg模拟器</a> 的基础功能与界面。
+            </div>
+        </div>
+
+        <!-- 三个场景模块 -->
+        <div class="scene-grid">
+            <div class="scene-card">
+                <div class="icon">🔍</div>
+                <h3>日常查询</h3>
+                <p>
+                    快速检索版本号、支持列表、已知限制。不用反复翻论坛，一个对照卡片就能解决大部分疑问。
+                </p>
+                <span class="badge">常用条目</span>
+            </div>
+            <div class="scene-card">
+                <div class="icon">📊</div>
+                <h3>对照参考</h3>
+                <p>
+                    把不同参数、响应模式、画面选项并列展示，适合在选择配置或调试时做横向对比。
+                </p>
+                <span class="badge">并排视图</span>
+            </div>
+            <div class="scene-card">
+                <div class="icon">📎</div>
+                <h3>延伸阅读</h3>
+                <p>
+                    由某个具体问题出发，关联相关的说明、社区讨论和官方文档摘要，辅助理解前因后果。
+                </p>
+                <span class="badge">链接笔记</span>
+            </div>
+        </div>
+
+        <!-- 常见说明区块 (FAQ摘要) -->
+        <div class="faq-block">
+            <h2>常见说明 · 摘要</h2>
+
+            <div class="faq-item">
+                <div class="q">如何快速了解某个版本的变化？</div>
+                <div class="a">
+                    建议先查看该版本的更新日志，再结合社区里玩家的实际反馈。日常查询时可以把 
+                    <a href="https://webs-pocketgamessoft.com">pg模拟器</a> 
+                    作为起点，很多基础信息已经汇总在对应卡片里。
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">对照多个配置时，有什么技巧？</div>
+                <div class="a">
+                    保持同一基准参数，并列记录帧率、延迟、显存占用等。如果某个参数在 
+                    <a href="https://webs-pocketgamessoft.com">pg模拟器</a> 
+                    的对照模块中已有标注，可以直接引用，省去手动整理的时间。
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="q">延伸阅读里的链接可靠吗？</div>
+                <div class="a">
+                    大部分链接指向官方文档或长期维护的社区帖子，但建议交叉验证。你可以在 
+                    <a href="https://webs-pocketgamessoft.com">pg模拟器</a> 
+                    页面底部找到相关参考来源的索引。
+                </div>
+            </div>
+
+            <div style="margin-top: 1.6rem; background: #e8f3f6; border-radius: 40px; padding: 0.6rem 1.2rem; font-size: 0.9rem; color: #1c5f6e;">
+                💡 提示：日常使用中积累自己的对照笔记，比单纯收藏链接更有帮助。
+            </div>
+        </div>
+
+        <!-- 页脚 -->
+        <div class="foot-note">
+            <span>内容仅供参考，不构成任何形式的承诺或引导。</span><br>
+            <span>关于 pg 模拟器的更多讨论，可参考 <a href="https://webs-pocketgamessoft.com">pg模拟器</a> 主页。</span>
+        </div>
+
+    </div>
+
+</body>
+</html>
